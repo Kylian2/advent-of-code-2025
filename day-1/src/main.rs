@@ -86,7 +86,6 @@ fn part_2() {
     println!("Le mot de passe est {passcode}");
 }
 
-// Peut-etre une piste de solution plus "propre" mais elle compte 9 click en trop...
 fn part_3() {
     let file_r = File::open("input.txt");
     let mut content = String::new();
@@ -107,19 +106,19 @@ fn part_3() {
         if let Some(side) = side {
             match side {
                 "L" => {
+                    if old_dial == 0 {
+                        passcode -= 1;
+                    }
                     passcode += val / 100;
                     dial = (dial - val.rem_euclid(100)).rem_euclid(100);
-                    if dial > old_dial {
+                    if dial > old_dial || dial == 0 {
                         passcode += 1;
                     }
                 }
 
                 "R" => {
-                    passcode += val / 100;
-                    dial = (dial + val.rem_euclid(100)).rem_euclid(100);
-                    if dial < old_dial {
-                        passcode += 1;
-                    }
+                    passcode += (dial + val) / 100;
+                    dial = (dial + val).rem_euclid(100);
                 }
                 _ => panic!("Coté non reconnu"),
             }
@@ -130,5 +129,5 @@ fn part_3() {
 }
 
 fn main() {
-    part_2();
+    part_3();
 }
